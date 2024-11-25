@@ -17,7 +17,7 @@ npm run start
 ```
 
 ###### Bonus task solution desc:
-The Number of items has been increases and data sharding has been added
+The Number of items has been increased and data sharding has been added
 
 To run the bonus task solution:
 ```sh
