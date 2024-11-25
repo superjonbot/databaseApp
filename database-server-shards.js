@@ -28,7 +28,11 @@ const createFakeMediaSegmentsData = databaseSize => {
     }
     return orderedList;
 };
+// Takes in data to be split into shards and the number of shards to create.
 const createShardData = (shardData, shardCount) => {
+    if (!Number.isInteger(shardCount) || shardCount <= 0) {
+        throw new Error('Invalid shardCount: must be a positive integer.');
+    }
     const shardSize = Math.ceil(shardData.length / shardCount);
     const shards = [];
     for (let i = 0; i < shardCount; i++) {
@@ -36,7 +40,7 @@ const createShardData = (shardData, shardCount) => {
     }
     return shards;
 };
-
+// Create a server that hosts the data set.
 const createServer = (dataSet, port) => {
     const server = http.createServer((req, res) => {
         const base = `http://localhost:${server.address().port}`;
@@ -84,7 +88,7 @@ const createServer = (dataSet, port) => {
 
     server.listen(port);
 };
-
+// Create a server that hosts the shard directory.
 const createShardDirectoryServer = (shards, port) => {
     const server = http.createServer((req, res) => {
         const base = `http://localhost:${server.address().port}`;
