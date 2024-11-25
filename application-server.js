@@ -71,10 +71,8 @@ function findSegment(res, knownLength, position) {
 
 // find segment using binary search
 function binarySearch(res, knownLength, position, port = DB_PORT) {
-  console.log(`knownLength=${knownLength}`);
     let currentStep = knownLength / 2;
     function tryNext(index) {
-        console.log(`binary search: trying index ${index} on port ${port}`);
         makeDatabaseRequest(`/query?index=${index}`, data => {
             const { result } = data;
             // Check if the position is within the current segment
@@ -102,7 +100,6 @@ function binarySearch(res, knownLength, position, port = DB_PORT) {
 function findShard(array, position){
   for (const obj of array) {
     if (obj.start <= position && position <= obj.end) {
-      console.log(`found position ${position} in shard with port ${obj.port} ${obj.start <= position}/${position <= obj.end}`);
       return obj;
     }
   }
@@ -112,13 +109,9 @@ function shardSearch(res, knownLength, position) {
   let shard;
   makeDirectoryRequest((data) => {
     shard = findShard(data.result, position);
-    console.log(`found position:${position} in ${shard}`);
     const {port,length} = shard;
     return binarySearch(res, length, position, port)
   });
-
-  //console.log(port)
-
 }
 // Obj to assign search types
 const searchFunctions = {
@@ -127,8 +120,6 @@ const searchFunctions = {
   brute: findSegment,
 };
 function getRange(res) {
-    console.log('get range from database ordered list');
-
     makeDatabaseRequest('/range', (data) => {
         const { length } = data.result;
 
@@ -151,7 +142,6 @@ const server = http.createServer((req, res) => {
 
     if (url.pathname === '/media-segment') {
         const position = parseInt(url.searchParams.get('position'), 10);
-        console.log('get media segment for position', position);
         const searchType = url.searchParams.get('searchType') || 'brute';
         const validSearchTypes = ['binary', 'brute', 'shard'];
         // validate
