@@ -40,6 +40,17 @@ const createShardData = (shardData, shardCount) => {
     }
     return shards;
 };
+// Send a response to the client.
+const sendResponse = (res, status, message) => {
+  const responseMessage = JSON.stringify(message);
+  setTimeout(() => {
+      res.writeHead(status, {
+          'content-type': 'application/json',
+          'content-length': Buffer.byteLength(responseMessage),
+      });
+      res.end(responseMessage);
+  }, 10);
+};
 // Create a server that hosts the data set.
 const createServer = (dataSet, port) => {
     const server = http.createServer((req, res) => {
@@ -69,17 +80,7 @@ const createServer = (dataSet, port) => {
             response.result = null;
         }
 
-        const message = JSON.stringify(response);
-
-        // Simulate disk and network work loads with a timeout.
-        setTimeout(() => {
-            res.writeHead(status, {
-                'content-type': 'application/json',
-                'content-length': Buffer.byteLength(message),
-            });
-
-            res.end(message);
-        }, 10);
+        sendResponse(res, status, response);
     });
 
     server.on('listening', () => {
@@ -111,17 +112,7 @@ const createShardDirectoryServer = (shards, port) => {
             response.result = null;
         }
 
-        const message = JSON.stringify(response);
-
-        // Simulate disk and network work loads with a timeout.
-        setTimeout(() => {
-            res.writeHead(status, {
-                'content-type': 'application/json',
-                'content-length': Buffer.byteLength(message),
-            });
-
-            res.end(message);
-        }, 10);
+        sendResponse(res, status, response);
     });
 
     server.on('listening', () => {
