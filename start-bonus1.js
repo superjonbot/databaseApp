@@ -3,7 +3,7 @@ const debug = false;
 const bashCommands = [
     'node database-server-shards.js',
     'node application-server.js',
-    'node perf-test-client shard',
+    'node perf-test-client.js shard',
 ];
 const launchDelay = 1000;
 const consoleCount = bashCommands.length;
