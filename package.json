@@ -1,0 +1,19 @@
+{
+  "name": "database-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node start.js",
+    "start-bonus": "node start-bonus1.js"
+  },
+  "author": "Jonathan Robles",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.9.1",
+    "http": "^0.0.1-security",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3"
+  }
+}
